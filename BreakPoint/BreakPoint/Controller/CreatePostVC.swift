@@ -24,6 +24,11 @@ class CreatePostVC: UIViewController,UITextViewDelegate {
         
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(true)
+        emailLbl.text = Auth.auth().currentUser?.email
+    }
+    
     func textViewDidBeginEditing(_ textView: UITextView) {
         textField.text = ""
     }
