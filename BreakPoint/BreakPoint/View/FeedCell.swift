@@ -8,14 +8,14 @@
 
 import UIKit
 
-class FeedCell: UITableViewCell {
+class FeedCell: UITableViewCell{
 
     //Outlets
     @IBOutlet weak var profileImg: UIImageView!
     @IBOutlet weak var email: UILabel!
     @IBOutlet weak var messageContent: UILabel!
     
-    func  configureCell(profileImg: UIImage, email: String, message: String){
+    func configureCell(profileImg: UIImage, email: String, message: String){
         self.profileImg.image = profileImg
         self.email.text = email
         self.messageContent.text = message
