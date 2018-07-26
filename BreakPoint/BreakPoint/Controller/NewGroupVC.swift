@@ -8,7 +8,7 @@
 
 import UIKit
 
-class NewGroupVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class NewGroupVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
   
     
 
@@ -20,12 +20,14 @@ class NewGroupVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     @IBOutlet weak var doneBtn: UIButton!
     @IBOutlet weak var tableView: UITableView!
     
+    var emailArray: [String] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.delegate = self
         tableView.dataSource = self
-
-        // Do any additional setup after loading the view.
+        emailSearchTextField.delegate = self
+        emailSearchTextField.addTarget(self, action: #selector(textFieldChanged), for: .editingChanged)
     }
     
     @IBAction func doneBtnPressed(_ sender: Any) {
@@ -35,10 +37,24 @@ class NewGroupVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         dismiss(animated: true, completion: nil)
     }
     
+    @objc func textFieldChanged(){
+        if(emailSearchTextField.text == ""){
+            emailArray = []
+            tableView.reloadData()
+        }
+        else{
+            DataService.instance.getEmail(searchQuery: emailSearchTextField.text!) { (returnEmailArray) in
+                self.emailArray = returnEmailArray
+                self.tableView.reloadData()
+            }
+        }
+        
+    }
+    
     //TableView functions
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
+        return emailArray.count
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -47,7 +63,7 @@ class NewGroupVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(withIdentifier: "UserCell") as? UserCell{
-            cell.configureCell(profileImg: UIImage(named: "defaultProfileImage")!, email: "johndoe@wtf.com", isSelected: true)
+            cell.configureCell(profileImg: UIImage(named: "defaultProfileImage")!, email: self.emailArray[indexPath.row], isSelected: true)
             return cell
         }
         return UserCell()
