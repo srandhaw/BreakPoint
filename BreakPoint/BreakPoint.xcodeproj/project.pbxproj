@@ -121,12 +121,12 @@
 		C770534E20FF6A1D0071C5E0 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				C770533C20FF69D80071C5E0 /* FeedVC.swift */,
-				C770533E20FF69D80071C5E0 /* GroupVC.swift */,
 				C79F58702100D7940092F97D /* AuthVC.swift */,
 				C79F58722100D7DC0092F97D /* LoginVC.swift */,
-				C772535B210359F200B2DD0F /* MeVC.swift */,
+				C770533C20FF69D80071C5E0 /* FeedVC.swift */,
 				C772535D210366DE00B2DD0F /* CreatePostVC.swift */,
+				C770533E20FF69D80071C5E0 /* GroupVC.swift */,
+				C772535B210359F200B2DD0F /* MeVC.swift */,
 				C76B1DA8210A446F0045747A /* NewGroupVC.swift */,
 			);
 			path = Controller;

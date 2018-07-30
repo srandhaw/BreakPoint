@@ -10,8 +10,6 @@ import UIKit
 
 class NewGroupVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
   
-    
-
     //Outlets
     @IBOutlet weak var titleTextField: InsetTextField!
     @IBOutlet weak var descriptionTextField: InsetTextField!
@@ -21,6 +19,7 @@ class NewGroupVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
     @IBOutlet weak var tableView: UITableView!
     
     var emailArray: [String] = []
+    var chosenUserArray: [String] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,6 +27,11 @@ class NewGroupVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
         tableView.dataSource = self
         emailSearchTextField.delegate = self
         emailSearchTextField.addTarget(self, action: #selector(textFieldChanged), for: .editingChanged)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        doneBtn.isHidden = true
     }
     
     @IBAction func doneBtnPressed(_ sender: Any) {
@@ -63,10 +67,35 @@ class NewGroupVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(withIdentifier: "UserCell") as? UserCell{
+            if(chosenUserArray.contains(emailArray[indexPath.row])){
             cell.configureCell(profileImg: UIImage(named: "defaultProfileImage")!, email: self.emailArray[indexPath.row], isSelected: true)
+            }
+            else{
+                cell.configureCell(profileImg: UIImage(named: "defaultProfileImage")!, email: self.emailArray[indexPath.row], isSelected: false)
+            }
             return cell
         }
         return UserCell()
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let cell = tableView.cellForRow(at: indexPath)  as? UserCell else { return }
+        
+        if(!(chosenUserArray.contains(cell.emailLabel.text!))){
+            chosenUserArray.append(cell.emailLabel.text!)
+            groupMemberLabel.text = chosenUserArray.joined(separator: ", ")
+            doneBtn.isHidden = false
+        }
+        else{
+            chosenUserArray.remove(at: chosenUserArray.firstIndex(of: cell.emailLabel.text!)!)
+            if(chosenUserArray.count >= 1){
+             groupMemberLabel.text = chosenUserArray.joined(separator: ", ")
+            }
+            else{
+               groupMemberLabel.text = "Add people to your group"
+                doneBtn.isHidden = true
+            }
+        }
     }
     
 }
