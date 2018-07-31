@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 
 class NewGroupVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
   
@@ -35,6 +36,21 @@ class NewGroupVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
     }
     
     @IBAction func doneBtnPressed(_ sender: Any) {
+        if(titleTextField.text != "" && descriptionTextField.text != ""){
+            DataService.instance.getIDsForUsername(usernames: chosenUserArray) { (returnedArray) in
+                var users = returnedArray
+                users.append((Auth.auth().currentUser?.uid)!)
+                
+                DataService.instance.createGroup(title: self.titleTextField.text!, description: self.descriptionTextField.text!, idArray: users, handler: { (done) in
+                    if(done){
+                        self.dismiss(animated: true, completion: nil)
+                    }
+                    else{
+                        print("Error in adding group")
+                    }
+                })
+            }
+        }
     }
     
     @IBAction func closeBtnPressed(_ sender: Any) {
