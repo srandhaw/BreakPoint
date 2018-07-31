@@ -1,2 +1,2 @@
 # BreakPoint
-An iOS chat app for them coders
+An iOS chat app for coders!
